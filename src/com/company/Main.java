@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.ArgParser.ArgParser;
 import com.company.graph.Algorithm;
 import com.company.graph.CellGrid;
 import com.company.graph.Graph;
@@ -8,12 +9,20 @@ import com.company.graph.DFSMazeSolver;
 import javax.swing.*;
 
 public class Main {
+    private static String KEY_X = "x";
+    private static String KEY_Y = "y";
 
     public static void main(String[] args) {
-        int w = 50;
-        int h = 30;
-//        int w = 192/2;
-//        int h = 108/2;
+        ArgParser argParser = new ArgParser()
+                .putKeyValue("-x", KEY_X)
+                .putKeyValue("-y", KEY_Y)
+                .putKeyValue("-w", KEY_X)
+                .putKeyValue("-h", KEY_Y)
+                .putDefault(KEY_X, "50")
+                .putDefault(KEY_Y, "30")
+                .parse(args);
+        int w = Integer.valueOf(argParser.getValue(KEY_X));
+        int h = Integer.valueOf(argParser.getValue(KEY_Y));
         int cell_size = 10;
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
