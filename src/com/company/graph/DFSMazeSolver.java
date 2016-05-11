@@ -33,20 +33,23 @@ public class DFSMazeSolver {
     private static final Color color_back = Color.decode("#66D9EF");
     private static final Color color_target = Color.decode("#F92672");
 
-    ;
     /*labels for both the vertexes and the edges*/
     private HashMap<Object, CellLabel> labels;
 
     public DFSMazeSolver(CellGrid grid, Graph<XYPair, Double> graph) {
         this.cellGrid = grid;
         this.graph = graph;
-        /*weird math because 0 isn't a valid vertex id*/
-        this.start = (int) (Math.random() * (graph.getLastVertexId() - 1) + 1);
-        this.target = (int) (Math.random() * (graph.getLastVertexId() - 1) + 1);
+        /*try vertex IDs until we find one that exists*/
+        do {
+            this.start = (int) (Math.random() * graph.getLastVertexId());
+        } while (graph.getVertex(this.start) == null);
+        do {
+            this.target = (int) (Math.random() * graph.getLastVertexId());
+        } while (graph.getVertex(this.target) == null);
 
         this.labels = new HashMap<Object, CellLabel>();
-        graph.getVertexes().forEach((id, v) -> labels.put(v, CellLabel.UNVISITED));
-        graph.getEdges().forEach((ep, e) -> labels.put(e, CellLabel.UNVISITED));
+        graph.getVertexes().forEach(v -> labels.put(v, CellLabel.UNVISITED));
+        graph.getEdges().forEach(e -> labels.put(e, CellLabel.UNVISITED));
 
         /*defaults*/
         this.stepDelay = 50;
@@ -75,13 +78,13 @@ public class DFSMazeSolver {
             throw new FoundException();
         }
 
-        Graph<XYPair, Double>.Vertex v = graph.getVertex(vertex_id);
+        Vertex<XYPair, ?> v = graph.getVertex(vertex_id);
         /*set the label*/
         labels.put(v, CellLabel.VISITED);
         cellGrid.put(v, color_forward);
-        for (Graph<XYPair, Double>.Edge e : v.getEdges().values()) {
+        for (Edge<XYPair, ?> e : v.getEdges()) {
 
-            Graph<XYPair, Double>.Vertex w = graph.getVertex(e.opposite(v.getId()));
+            Vertex<XYPair, ?> w = graph.getVertex(e.opposite(v.getId()));
 
             if (labels.get(w).equals(CellLabel.UNVISITED)) {
 

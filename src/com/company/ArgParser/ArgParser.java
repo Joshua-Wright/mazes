@@ -1,7 +1,5 @@
 package com.company.ArgParser;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 import java.util.HashMap;
 
 public class ArgParser {
@@ -42,6 +40,8 @@ public class ArgParser {
                 /*TODO: better solution*/
                 return this;
             }
+            /*todo: -flag=value argument types*/
+            /*todo: detect double-dashes, e.g. --flag*/
             switch (argTypes.get(args[i])) {
                 case KEY_VALUE:
                     allArgs.put(flagToKey.get(args[i]), args[i+1]);

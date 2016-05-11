@@ -1,10 +1,7 @@
 package com.company;
 
 import com.company.ArgParser.ArgParser;
-import com.company.graph.Algorithm;
-import com.company.graph.CellGrid;
-import com.company.graph.Graph;
-import com.company.graph.DFSMazeSolver;
+import com.company.graph.*;
 
 import javax.swing.*;
 
@@ -25,7 +22,7 @@ public class Main {
                 .putKeyValue("-sd", KEY_STEP_DELAY)
                 .putKeyValue("-fd", KEY_FINAL_DELAY)
                 .putDefault(KEY_FINAL_DELAY, "1000")
-                .putDefault(KEY_STEP_DELAY, "50")
+                .putDefault(KEY_STEP_DELAY, "20")
                 .parse(args);
         int w = Integer.valueOf(argParser.getValue(KEY_X));
         int h = Integer.valueOf(argParser.getValue(KEY_Y));
@@ -37,10 +34,10 @@ public class Main {
         window.setBounds(0,0, (w * 2) * cell_size, (h * 2 + 2) * cell_size);
         window.setVisible(true);
         while (true) {
-            Graph g = Algorithm.GeneratePlanarGraph(w, h);
+            Graph<XYPair, Double> g = Algorithm.GeneratePlanarGraph(w, h);
             g = Algorithm.MSTKruskals(g);
 
-            CellGrid cellGrid = new CellGrid(w, h, cell_size, g);
+            CellGrid cellGrid = new CellGrid(w, h, g);
 
             window.getContentPane().add(cellGrid);
             window.revalidate();
