@@ -13,8 +13,9 @@ public class DFSMazeSolver {
         return finalDelay;
     }
 
-    public void setFinalDelay(long finalDelay) {
+    public DFSMazeSolver setFinalDelay(long finalDelay) {
         this.finalDelay = finalDelay;
+        return this;
     }
 
     private long finalDelay;
@@ -28,9 +29,9 @@ public class DFSMazeSolver {
         BAD_NODE,
     }
 
-    private Color color_forward = Color.GREEN;
-    private Color color_back = Color.BLUE;
-    private Color color_target = Color.RED;
+    private static final Color color_forward = Color.decode("#A6E22E");
+    private static final Color color_back = Color.decode("#66D9EF");
+    private static final Color color_target = Color.decode("#F92672");
 
     ;
     /*labels for both the vertexes and the edges*/
@@ -47,23 +48,28 @@ public class DFSMazeSolver {
         graph.getVertexes().forEach((id, v) -> labels.put(v, CellLabel.UNVISITED));
         graph.getEdges().forEach((ep, e) -> labels.put(e, CellLabel.UNVISITED));
 
+        /*defaults*/
         this.stepDelay = 50;
         this.finalDelay = 500;
+
+        grid.setBackgroundColor(Color.decode("#524F52"));
+
     }
 
     public long getStepDelay() {
         return stepDelay;
     }
 
-    public void setStepDelay(long stepDelay) {
+    public DFSMazeSolver setStepDelay(long stepDelay) {
         this.stepDelay = stepDelay;
+        return this;
     }
 
     private class FoundException extends Exception {
+        /*throw this when we finally find the target, to unwind the stack*/
     }
 
     private void DFS(int vertex_id) throws InterruptedException, FoundException {
-//        System.out.println("id: " + String.valueOf(vertex_id));
         if (vertex_id == target) {
             Thread.sleep(finalDelay);
             throw new FoundException();
@@ -86,20 +92,20 @@ public class DFSMazeSolver {
                 DFS(w.getId());
                 cellGrid.put(w, color_back);
                 cellGrid.put(e, color_back);
-
             }
         }
         Thread.sleep(stepDelay);
     }
 
-    public void run() {
+    public DFSMazeSolver run() {
         cellGrid.put(graph.getVertex(target), color_target);
         try {
             DFS(start);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (FoundException e) {
-            return;
+            return this;
         }
+        return this;
     }
 }

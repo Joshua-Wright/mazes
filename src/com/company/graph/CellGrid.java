@@ -8,6 +8,16 @@ public class CellGrid extends JComponent {
     private Integer cell_size;
     private HashMap<XYPair, Cell> mCells;
     private Graph<XYPair, Double> graph;
+    private Color backgroundColor;
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
     private int w, h;
 
     private class Cell {
@@ -29,6 +39,7 @@ public class CellGrid extends JComponent {
         this.h = y;
         this.mCells = new HashMap<>();
         this.cell_size = cell_size;
+        this.backgroundColor = Color.DARK_GRAY;
 
         /*insert the vertexes and edges*/
         g.getVertexes().forEach((id, v) -> put(v, Color.WHITE));
@@ -53,11 +64,14 @@ public class CellGrid extends JComponent {
     }
 
     public void paint(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(0, 0, 2 * w * cell_size, 2 * h * cell_size);
+        int cs_x = getWidth() / (2*w-1);
+        int cs_y = getHeight() / (2*h-1);
+//        g.setColor(Color.DARK_GRAY);
+        g.setColor(backgroundColor);
+        g.fillRect(0, 0, getWidth(), getHeight());
         mCells.forEach((xyPair, cell) -> {
             g.setColor(cell.color);
-            g.fillRect(cell.x * cell_size, cell.y * cell_size, cell_size, cell_size);
+            g.fillRect(cell.x * cs_x, cell.y * cs_y, cs_x, cs_y);
         });
     }
 

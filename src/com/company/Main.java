@@ -9,8 +9,10 @@ import com.company.graph.DFSMazeSolver;
 import javax.swing.*;
 
 public class Main {
-    private static String KEY_X = "x";
-    private static String KEY_Y = "y";
+    private static String KEY_X = "X";
+    private static String KEY_Y = "Y";
+    private static String KEY_STEP_DELAY = "STEP_DELAY";
+    private static String KEY_FINAL_DELAY = "FINAL_DELAY";
 
     public static void main(String[] args) {
         ArgParser argParser = new ArgParser()
@@ -20,13 +22,19 @@ public class Main {
                 .putKeyValue("-h", KEY_Y)
                 .putDefault(KEY_X, "50")
                 .putDefault(KEY_Y, "30")
+                .putKeyValue("-sd", KEY_STEP_DELAY)
+                .putKeyValue("-fd", KEY_FINAL_DELAY)
+                .putDefault(KEY_FINAL_DELAY, "1000")
+                .putDefault(KEY_STEP_DELAY, "50")
                 .parse(args);
         int w = Integer.valueOf(argParser.getValue(KEY_X));
         int h = Integer.valueOf(argParser.getValue(KEY_Y));
+        long stepDelay = Long.valueOf(argParser.getValue(KEY_STEP_DELAY));
+        long finalDelay = Long.valueOf(argParser.getValue(KEY_FINAL_DELAY));
         int cell_size = 10;
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setBounds(40, 40, (w * 2) * cell_size, (h * 2 + 2) * cell_size);
+        window.setBounds(0,0, (w * 2) * cell_size, (h * 2 + 2) * cell_size);
         window.setVisible(true);
         while (true) {
             Graph g = Algorithm.GeneratePlanarGraph(w, h);
@@ -36,9 +44,10 @@ public class Main {
 
             window.getContentPane().add(cellGrid);
             window.revalidate();
-            DFSMazeSolver solver = new DFSMazeSolver(cellGrid, g);
-            solver.setStepDelay(2);
-            solver.run();
+            DFSMazeSolver solver = new DFSMazeSolver(cellGrid, g)
+                    .setStepDelay(stepDelay)
+                    .setFinalDelay(finalDelay)
+                    .run();
             window.remove(cellGrid);
         }
     }
