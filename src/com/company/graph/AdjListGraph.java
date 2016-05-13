@@ -139,20 +139,19 @@ public class AdjListGraph<VP, EP extends Comparable> implements Graph<VP, EP> {
         }
     }
 
-    private class AdjListEdge implements Edge<VP, EP> {
+    private class AdjListEdge implements Edge<VP, EP>, Comparable {
         private EdgePair pair;
         private EP property;
 
         @Override
         public int compareTo(Object o) {
-            Edge<?, EP> e = (Edge<?, EP>) o;
+            if (!(o instanceof Edge)) {
+                return 0;
+            }
+            Edge<?, EP> e = (Edge<VP, EP>) o;
             int cmp = property.compareTo(e.getProperty());
             if (cmp == 0) {
-                if (e.getSrc() == pair.getSrc() && e.getDest() == pair.getDest()) {
-                    return 0;
-                } else {
-                    return -1; /*TODO: is this the right return value?*/
-                }
+                return pair.compareTo(new EdgePair(e.getSrc(), e.getDest()));
             } else {
                 return cmp;
             }

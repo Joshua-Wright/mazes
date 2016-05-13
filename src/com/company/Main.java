@@ -22,7 +22,7 @@ public class Main {
                 .putKeyValue("-sd", KEY_STEP_DELAY)
                 .putKeyValue("-fd", KEY_FINAL_DELAY)
                 .putDefault(KEY_FINAL_DELAY, "1000")
-                .putDefault(KEY_STEP_DELAY, "20")
+                .putDefault(KEY_STEP_DELAY, "10")
                 .parse(args);
         int w = Integer.valueOf(argParser.getValue(KEY_X));
         int h = Integer.valueOf(argParser.getValue(KEY_Y));
@@ -35,7 +35,9 @@ public class Main {
         window.setVisible(true);
         while (true) {
             Graph<XYPair, Double> g = Algorithm.GeneratePlanarGraph(w, h);
-            g = Algorithm.MSTKruskals(g);
+
+//            g = Algorithm.MSTKruskals(g);
+            g = Algorithm.RandomBFS(g);
 
             CellGrid cellGrid = new CellGrid(w, h, g);
 

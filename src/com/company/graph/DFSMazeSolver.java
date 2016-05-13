@@ -41,10 +41,10 @@ public class DFSMazeSolver {
         this.graph = graph;
         /*try vertex IDs until we find one that exists*/
         do {
-            this.start = (int) (Math.random() * graph.getLastVertexId());
+            this.start = (int) Math.ceil(Math.random() * graph.getLastVertexId());
         } while (graph.getVertex(this.start) == null);
         do {
-            this.target = (int) (Math.random() * graph.getLastVertexId());
+            this.target = (int) Math.ceil(Math.random() * graph.getLastVertexId());
         } while (graph.getVertex(this.target) == null);
 
         this.labels = new HashMap<Object, CellLabel>();

@@ -2,8 +2,6 @@ package com.company.graph;
 
 import java.lang.annotation.Documented;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 public interface Graph<VP, EP> {
 
@@ -63,7 +61,7 @@ public interface Graph<VP, EP> {
 
     Collection<Edge<VP, EP>> getEdges();
 
-    class EdgePair {
+    class EdgePair implements Comparable {
         private int src;
         private int dest;
 
@@ -105,6 +103,16 @@ public interface Graph<VP, EP> {
                     "src=" + src +
                     ", dest=" + dest +
                     '}';
+        }
+
+        @Override
+        public int compareTo(Object o) {
+            EdgePair e = (EdgePair) o;
+            if (Integer.compare(src,e.src) != 0) {
+                return Integer.compare(src,e.src);
+            } else {
+                return Integer.compare(dest,e.dest);
+            }
         }
     }
 

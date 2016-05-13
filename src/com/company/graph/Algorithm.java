@@ -22,17 +22,21 @@ public class Algorithm {
         return output;
     }
 
-    public static <VP, EP extends Comparable> AdjListGraph<VP, EP> RandomBFS(AdjListGraph<VP, EP> g) {
-        /*starts at node 1*/
+    public static <VP, EP extends Comparable> Graph<VP, EP> RandomBFS(Graph<VP, EP> g) {
+        Graph<VP, EP> output = new AdjListGraph<VP, EP>();
         HashMap<Integer, Integer> parentMap = new HashMap<>();
-        AdjListGraph<VP, EP> output = new AdjListGraph<VP, EP>();
         TreeMap<Double, Vertex> toProcess = new TreeMap<>();
         HashMap<Vertex, Boolean> processed = new HashMap<>();
         g.getVertexes().forEach(v -> {
             processed.put(v, false);
             output.insertVertex(v.getProp(), v.getId());
         });
-        toProcess.put(0.0, g.getVertex(1));
+        /*start at random vertex*/
+        int startV;
+        do {
+            startV = (int) Math.ceil(Math.random() * g.getLastVertexId());
+        } while (g.getVertex(startV) == null);
+        toProcess.put(0.0, g.getVertex(startV));
 
         while (!toProcess.isEmpty()) {
             /*get a random thing to look at*/
@@ -105,10 +109,10 @@ public class Algorithm {
         return output;
     }
 
-    private static void MergeClusters(HashMap<Integer, HashSet<Integer>> C, Integer u, Integer v) {
+    private static void MergeClusters(HashMap<Integer, HashSet<Integer>> C, int u, int v) {
         /*merge both into cluster at u. If that is bad size-wise, just swap them*/
         if (C.get(u).size() < C.get(v).size()) {
-            Integer c = u;
+            int c = u;
             u = v;
             v = c;
         }
@@ -134,11 +138,9 @@ public class Algorithm {
 
         while (!PQ.isEmpty()) {
             Edge<?, Double> e = PQ.poll();
-//            Integer u = e.getSrc();
-//            Integer v = e.getDest();
-            Integer v = e.getDestVertex().getId();
-            Integer u = e.getSrcVertex().getId();
-            if (!C.get(u).equals(C.get(v))) { /*nodes from different cluster*/
+            int u = e.getSrc();
+            int v = e.getDest();
+            if (C.get(u) != C.get(v)) { /*nodes from different cluster*/
                 /*insert this edge to the spanning tree*/
                 output.insertEdgeUndirected(u, v, e.getProperty());
                 MergeClusters(C, u, v);
