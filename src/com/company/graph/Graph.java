@@ -45,10 +45,6 @@ public interface Graph<VP, EP> {
 
     int getLastVertexId();
 
-    boolean hasEdge(EdgePair edgePair);
-
-    boolean hasEdge(@VertexId int src, @VertexId int dest);
-
     Edge<VP, EP> getEdge(EdgePair pair);
 
     Edge<VP, EP> getEdge(@VertexId int src, @VertexId int dest);

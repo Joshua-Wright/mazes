@@ -58,14 +58,6 @@ public class AdjListGraph<VP, EP extends Comparable> implements Graph<VP, EP> {
         return edges.size();
     }
 
-    public boolean hasEdge(EdgePair edgePair) {
-        return edges.containsKey(edgePair);
-    }
-
-    public boolean hasEdge(int src, int dest) {
-        return edges.containsKey(new EdgePair(src, dest));
-    }
-
     public Edge<VP, EP> getEdge(EdgePair pair) {
         return edges.get(pair);
     }
