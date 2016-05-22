@@ -8,6 +8,7 @@ public class CellGrid extends JComponent {
     private HashMap<XYPair, Cell> mCells;
     private Graph<XYPair, Double> graph;
     private Color backgroundColor;
+    private Color foregroundColor = Color.WHITE;
 
     public Color getBackgroundColor() {
         return backgroundColor;
@@ -15,6 +16,14 @@ public class CellGrid extends JComponent {
 
     public void setBackgroundColor(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    public Color getForegroundColor() {
+        return foregroundColor;
+    }
+
+    public void setForegroundColor(Color foregroundColor) {
+        this.foregroundColor = foregroundColor;
     }
 
     private int w, h;
@@ -40,15 +49,19 @@ public class CellGrid extends JComponent {
         this.backgroundColor = Color.DARK_GRAY;
 
         /*insert the vertexes and edges*/
-        g.getVertexes().forEach(v -> put(v, Color.WHITE));
-        g.getEdges().forEach(e -> put(e, Color.WHITE));
+        g.getVertexes().forEach(v -> put(v, foregroundColor));
+        g.getEdges().forEach(e -> put(e, foregroundColor));
 
     }
 
     public void put(Vertex<XYPair, ?> v, Color c) {
         int x = v.getProp().x * 2;
         int y = v.getProp().y * 2;
-        mCells.put(new XYPair(x, y), new Cell(x, y, c));
+        if (c == null) {
+            mCells.remove(new XYPair(x, y));
+        } else {
+            mCells.put(new XYPair(x, y), new Cell(x, y, c));
+        }
         repaint();
     }
 
@@ -57,7 +70,16 @@ public class CellGrid extends JComponent {
         Vertex<XYPair, ?> u = graph.getVertex(e.getDest());
         int x = (v.getProp().x * 2 + u.getProp().x * 2) / 2;
         int y = (v.getProp().y * 2 + u.getProp().y * 2) / 2;
-        mCells.put(new XYPair(x, y), new Cell(x, y, c));
+        if (c == null) {
+            mCells.remove(new XYPair(x, y));
+        } else {
+            mCells.put(new XYPair(x, y), new Cell(x, y, c));
+        }
+        repaint();
+    }
+
+    public void removeAll() {
+        mCells.clear();
         repaint();
     }
 
@@ -68,11 +90,13 @@ public class CellGrid extends JComponent {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getWidth(), getHeight());
         mCells.forEach((xyPair, cell) -> {
-            g.setColor(cell.color);
-            int x = (int) (cell.x * cs_x);
-            int y = (int) (cell.y * cs_y);
-            /* +1 on cell size so that there are no gaps*/
-            g.fillRect(x, y, (int) cs_x + 1, (int) cs_y + 1);
+            if (!cell.color.equals(backgroundColor)) {
+                g.setColor(cell.color);
+                int x = (int) (cell.x * cs_x);
+                int y = (int) (cell.y * cs_y);
+                /* +1 on cell size so that there are no gaps*/
+                g.fillRect(x, y, (int) cs_x + 1, (int) cs_y + 1);
+            }
         });
     }
 
