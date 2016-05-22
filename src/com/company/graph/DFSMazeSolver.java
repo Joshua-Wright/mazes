@@ -8,16 +8,6 @@ public class DFSMazeSolver {
     private Graph<XYPair, Double> graph;
     private int start, target;
     private long stepDelay;
-
-    public long getFinalDelay() {
-        return finalDelay;
-    }
-
-    public DFSMazeSolver setFinalDelay(long finalDelay) {
-        this.finalDelay = finalDelay;
-        return this;
-    }
-
     private long finalDelay;
 
     private enum CellLabel {
@@ -35,6 +25,10 @@ public class DFSMazeSolver {
 
     /*labels for both the vertexes and the edges*/
     private HashMap<Object, CellLabel> labels;
+
+    private class FoundException extends Exception {
+        /*throw this when we finally find the target, to unwind the stack*/
+    }
 
     public DFSMazeSolver(CellGrid grid, Graph<XYPair, Double> graph) {
         this.cellGrid = grid;
@@ -55,7 +49,7 @@ public class DFSMazeSolver {
         this.stepDelay = 50;
         this.finalDelay = 500;
 
-        grid.setBackgroundColor(Color.decode("#524F52"));
+        cellGrid.setBackgroundColor(Color.decode("#524F52"));
 
     }
 
@@ -66,10 +60,6 @@ public class DFSMazeSolver {
     public DFSMazeSolver setStepDelay(long stepDelay) {
         this.stepDelay = stepDelay;
         return this;
-    }
-
-    private class FoundException extends Exception {
-        /*throw this when we finally find the target, to unwind the stack*/
     }
 
     private void DFS(int vertex_id) throws InterruptedException, FoundException {
@@ -109,6 +99,15 @@ public class DFSMazeSolver {
         } catch (FoundException e) {
             return this;
         }
+        return this;
+    }
+
+    public long getFinalDelay() {
+        return finalDelay;
+    }
+
+    public DFSMazeSolver setFinalDelay(long finalDelay) {
+        this.finalDelay = finalDelay;
         return this;
     }
 }

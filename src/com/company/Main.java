@@ -31,21 +31,25 @@ public class Main {
         int cell_size = 10;
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setBounds(0,0, (w * 2) * cell_size, (h * 2 + 2) * cell_size);
+        window.setBounds(30, 30, (w * 2) * cell_size, (h * 2 + 2) * cell_size);
         window.setVisible(true);
         while (true) {
             Graph<XYPair, Double> g = Algorithm.GeneratePlanarGraph(w, h);
 
-//            g = Algorithm.MSTKruskals(g);
-            g = Algorithm.RandomBFS(g);
+            g = Algorithm.MSTKruskals(g);
+//            g = Algorithm.RandomBFS(g);
 
             CellGrid cellGrid = new CellGrid(w, h, g);
 
             window.getContentPane().add(cellGrid);
             window.revalidate();
-            DFSMazeSolver solver = new DFSMazeSolver(cellGrid, g)
-                    .setStepDelay(stepDelay)
-                    .setFinalDelay(finalDelay)
+//            DFSMazeSolver solver1 = new DFSMazeSolver(cellGrid, g)
+//                    .setStepDelay(stepDelay)
+//                    .setFinalDelay(finalDelay)
+//                    .run();
+            BFSMazeSolver solver2 = new BFSMazeSolver(cellGrid, g)
+                    .setStepDelay(20)
+                    .setDoFullMaze(false)
                     .run();
             window.remove(cellGrid);
         }

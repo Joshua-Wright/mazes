@@ -109,20 +109,6 @@ public class Algorithm {
         return output;
     }
 
-    private static void MergeClusters(HashMap<Integer, HashSet<Integer>> C, int u, int v) {
-        /*merge both into cluster at u. If that is bad size-wise, just swap them*/
-        if (C.get(u).size() < C.get(v).size()) {
-            int c = u;
-            u = v;
-            v = c;
-        }
-        /*merge the set itself*/
-        HashSet<Integer> newset = C.get(u);
-        newset.addAll(C.get(v));
-        /*update all the old references*/
-        C.get(v).forEach(a -> C.put(a, newset));
-    }
-
     public static <VP> AdjListGraph<VP, Double> MSTKruskals(Graph<VP, Double> g) {
         AdjListGraph<VP, Double> output = new AdjListGraph<>();
         HashMap<Integer, HashSet<Integer>> C = new HashMap<>();
@@ -147,5 +133,19 @@ public class Algorithm {
             }
         }
         return output;
+    }
+
+    private static void MergeClusters(HashMap<Integer, HashSet<Integer>> C, int u, int v) {
+        /*merge both into cluster at u. If that is bad size-wise, just swap them*/
+        if (C.get(u).size() < C.get(v).size()) {
+            int c = u;
+            u = v;
+            v = c;
+        }
+        /*merge the set itself*/
+        HashSet<Integer> newset = C.get(u);
+        newset.addAll(C.get(v));
+        /*update all the old references*/
+        C.get(v).forEach(a -> C.put(a, newset));
     }
 }
