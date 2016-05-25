@@ -6,14 +6,15 @@ import com.company.graph.*;
 import javax.swing.*;
 
 public class Main {
-    private static Integer KEY_X = 0;
-    private static Integer KEY_Y = 1;
-    private static Integer KEY_STEP_DELAY = 2;
-    private static Integer KEY_FINAL_DELAY = 3;
-    private static Integer KEY_DFS = 4;
-    private static Integer KEY_BFS = 5;
-    private static Integer KEY_FADE = 6;
-    private static Integer KEY_NOFADE = 7;
+    private static int id = 0;
+    private static final Integer KEY_X = id++;
+    private static final Integer KEY_Y = id++;
+    private static final Integer KEY_STEP_DELAY = id++;
+    private static final Integer KEY_FINAL_DELAY = id++;
+    private static final Integer KEY_DFS = id++;
+    private static final Integer KEY_BFS = id++;
+    private static final Integer KEY_FADE = id++;
+    private static final Integer KEY_NOFADE = id++;
 
     public static void main(String[] args) {
         ArgParser argParser = new ArgParser()
